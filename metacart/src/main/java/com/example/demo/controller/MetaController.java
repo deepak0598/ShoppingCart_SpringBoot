@@ -1,28 +1,38 @@
 package com.example.demo.controller;
 
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.Category;
 import com.example.demo.repository.CategoryRepository;
 
 @RestController
+@RequestMapping("/metacart")
 public class MetaController {
-	public MetaController() {
-		System.out.println("Hello const");
-	}
 	@Autowired
 	CategoryRepository categoryRepository;
 	
-	@RequestMapping("/")
-	public void get() {
-		System.out.println("hola");
+	@GetMapping("/getCategory/{id}")
+	public Optional<Category> getCategoryById(@PathVariable int id) {
+		return categoryRepository.findById(id);
 	}
-	@RequestMapping("/getData")
-	@ResponseBody
-	public String getData() {
-		System.out.println("Hello deepak");
-		return categoryRepository.findAll().toString();
+	
+	@GetMapping("/getCategory")
+	public List<Category> getCategory() {
+		return categoryRepository.findAll();
+	}
+	
+	@PostMapping(value="/addCategory")
+	public Category addCategory(@RequestBody Category category) {
+		System.out.println(category.getCategoryName()+"   "+category.getCategoryId());
+		categoryRepository.save(category);
+		return category;
 	}
 }
