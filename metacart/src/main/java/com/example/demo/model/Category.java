@@ -22,6 +22,6 @@ public class Category {
 	@Id
 	@Column(name="categoryId")
 	private int categoryId;
-	@Column(name="categoryName")
+	@Column(name="categoryName",nullable=false)
 	private String categoryName;
 }

@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Category;
+import com.example.demo.model.Product;
 import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.ProductRepository;
 
 @RestController
-@RequestMapping("/metacart")
 public class MetaController {
 	@Autowired
 	CategoryRepository categoryRepository;
+	
+	@Autowired
+	ProductRepository productRepository;
 	
 	@GetMapping("/getCategory/{id}")
 	public Optional<Category> getCategoryById(@PathVariable int id) {
@@ -31,8 +35,23 @@ public class MetaController {
 	
 	@PostMapping(value="/addCategory")
 	public Category addCategory(@RequestBody Category category) {
-		System.out.println(category.getCategoryName()+"   "+category.getCategoryId());
 		categoryRepository.save(category);
 		return category;
+	}
+	
+	@PostMapping("/addProduct")
+	public Product addProduct(@RequestBody Product product) {
+		productRepository.save(product);
+		return product;
+	}
+	
+	@GetMapping("/getProduct/{id}")
+	public Optional<Product> getProduct(@PathVariable int id) {
+		return productRepository.findById(id);
+	}
+	
+	@GetMapping("/getProduct")
+	public List<Product> getProduct() {
+		return productRepository.findAll();
 	}
 }
